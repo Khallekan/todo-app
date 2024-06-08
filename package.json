@@ -1,0 +1,113 @@
+{
+  "name": "assessment-backend",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "dotenv -e .env.dev -- nest start --watch",
+    "start:debug": "dotenv -e .env.dev -- nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prestart:dev": "yarn db:dev:start",
+    "db:dev:start": "docker compose --env-file .env.dev up assessment-backend-db assessment-backend-pg-admin -d",
+    "db:dev:remove": "docker compose --env-file .env.dev rm assessment-backend-db assessment-backend-pg-admin -s -f -v",
+    "format:check": "prettier -c \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@nestjs-modules/mailer": "^2.0.2",
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.2.2",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "^2.0.5",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/typeorm": "^10.0.2",
+    "argon2": "^0.40.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "dotenv-cli": "^7.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.13",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@nestjs/cli": "^10.0.0",
+    "@nestjs/schematics": "^10.0.0",
+    "@nestjs/testing": "^10.0.0",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.3.1",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
+    "@types/supertest": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "eslint-plugin-sonarjs": "^1.0.3",
+    "eslint-plugin-unused-imports": "^4.0.0",
+    "husky": "^9.0.11",
+    "jest": "^29.5.0",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.0.0",
+    "source-map-support": "^0.5.21",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.0",
+    "ts-loader": "^9.4.3",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "./",
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "{src,apps,libs,test}/**/*.ts": [
+      "eslint \"{src,apps,libs,test}/**/*.ts\" --fix --max-warnings=0",
+      "prettier -w"
+    ],
+    "\"src/**/*.ts\" \"test/**/*.ts\"": [
+      "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
+    ]
+  }
+}
