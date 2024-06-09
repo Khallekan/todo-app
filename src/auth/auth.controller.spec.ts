@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
 import { AuthController } from './auth.controller';
+import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { LoginService } from './services/login.service';
 import { RegisterService } from './services/register.service';
@@ -16,7 +17,7 @@ describe('AuthController', () => {
   };
 
   let register: RegisterService;
-  // let login: LoginService;
+  let login: LoginService;
 
   const mockLoginService = {
     login: jest.fn(),
@@ -36,7 +37,7 @@ describe('AuthController', () => {
 
     app = moduleFixture.createNestApplication();
     controller = app.get<AuthController>(AuthController);
-    // login = app.get<LoginService>(LoginService);
+    login = app.get<LoginService>(LoginService);
     register = app.get<RegisterService>(RegisterService);
 
     await app.init();
@@ -74,18 +75,33 @@ describe('AuthController', () => {
     });
   });
 
-  // describe('login', () => {
-  //   it('should login a user', async () => {
-  //     const loginDto = {
-  //       email: 'test@email.com',
-  //       password: 'password@123',
-  //     } satisfies LoginDto;
+  describe('login', () => {
+    it('should login a user', async () => {
+      const loginDto = {
+        email: 'test@email.com',
+        password: 'password@123',
+      } satisfies LoginDto;
 
-  //     jest.spyOn(login, 'login').mockReturnValue(Promise.resolve({
+      jest.spyOn(login, 'login').mockReturnValue(
+        Promise.resolve({
+          message: 'User logged in successfully',
+          data: {},
+        }),
+      );
 
-  //     }))
-  //   });
-  // });
+      const response = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send(loginDto);
+
+      expect(login.login).toHaveBeenCalled();
+      expect(login.login).toHaveBeenCalledWith(loginDto);
+      expect(response.status).toBe(HttpStatus.OK);
+      expect(response.body).toEqual({
+        message: 'User logged in successfully',
+        data: {},
+      });
+    });
+  });
 
   afterAll(async () => {
     await app.close();

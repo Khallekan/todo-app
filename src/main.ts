@@ -39,6 +39,9 @@ async function bootstrap() {
     .get(ConfigService<z.infer<typeof validationSchema>>)
     .get<number>('PORT');
 
+  // eslint-disable-next-line no-console
+  console.log({ port }, 'PORT');
+
   await app.listen(port as number, () => {
     // eslint-disable-next-line no-console
     console.log(`Server is listening on port ${port}`);
